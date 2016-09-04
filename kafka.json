@@ -113,6 +113,57 @@
             "topicPattern" : "featured-song-request",
             "topicPattern.priority" : "1"
          }
+      },
+      {
+         "spec" : {
+            "dataSchema" : {
+               "granularitySpec" : {
+                  "queryGranularity" : "none",
+                  "type" : "uniform",
+                  "segmentGranularity" : "hour"
+               },
+               "dataSource" : "request-tracing",
+               "parser" : {
+                  "type" : "string",
+                  "parseSpec" : {
+                     "timestampSpec" : {
+                        "format" : "auto",
+                        "column" : "timestamp"
+                     },
+                     "format" : "json",
+                     "dimensionsSpec" : {
+                        "dimensions" : [
+                          "pipeline",
+                          "requestId",
+                          "stage",
+                          "stageIndex",
+                          "campaignId",
+                          "campaignIndex",
+                          "rank"
+                        ]
+                     }
+                  }
+               },
+               "metricsSpec" : [
+                  {
+                     "type" : "count",
+                     "name" : "count"
+                  }
+               ]
+            },
+            "tuningConfig" : {
+               "type" : "realtime",
+               "intermediatePersistPeriod" : "PT10S",
+               "windowPeriod" : "PT10S",
+               "maxRowsInMemory" : 75000
+            }
+         },
+         "properties" : {
+            "task.partitions" : "1",
+            "task.replicants" : "1",
+            "topicPattern" : "featured-song-request",
+            "topicPattern.priority" : "1"
+         }
       }
    ],
    "properties" : {
