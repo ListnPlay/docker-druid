@@ -1,0 +1,129 @@
+{
+   "dataSources" : [
+      {
+         "spec" : {
+            "dataSchema" : {
+               "granularitySpec" : {
+                  "queryGranularity" : "none",
+                  "type" : "uniform",
+                  "segmentGranularity" : "hour"
+               },
+               "dataSource" : "requests",
+               "parser" : {
+                  "type" : "string",
+                  "parseSpec" : {
+                     "timestampSpec" : {
+                        "format" : "auto",
+                        "column" : "timestamp"
+                     },
+                     "format" : "json",
+                     "flattenSpec": {
+                       "useFieldDiscovery": true,
+                       "fields": [
+                        {
+                          "type": "path",
+                          "name": "consumer_ip",
+                          "expr": "$.consumer.ip"
+                        },
+                        {
+                          "type": "path",
+                          "name": "consumer_gender",
+                          "expr": "$.consumer.gender"
+                        },
+                        {
+                          "type": "path",
+                          "name": "consumer_birth",
+                          "expr": "$.consumer.birth"
+                        },
+                        {
+                          "type": "path",
+                          "name": "consumer_continent",
+                          "expr": "$.consumer[?(@.location)].location.continent"
+                        },
+                        {
+                          "type": "path",
+                          "name": "consumer_country",
+                          "expr": "$.consumer[?(@.location)].location.country"
+                        },
+                        {
+                          "type": "path",
+                          "name": "consumer_region",
+                          "expr": "$.consumer[?(@.location)].location.region"
+                        },
+                        {
+                          "type": "path",
+                          "name": "consumer_city",
+                          "expr": "$.consumer[?(@.location)].location.city"
+                        },
+                        {
+                          "type": "path",
+                          "name": "api_key",
+                          "expr": "$.app.apiKey"
+                        },
+                        {
+                          "type": "path",
+                          "name": "app_name",
+                          "expr": "$.app.name"
+                        }
+                       ]
+                     },
+                     "dimensionsSpec" : {
+                        "dimensions" : [
+                          "keywords",
+                          "genres",
+                          "similarArtists",
+                          "pipeline",
+                          "platform",
+                          "consumerToken",
+                          "consumer_ip",
+                          "consumer_gender",
+                          "consumer_birth",
+                          "consumer_continent",
+                          "consumer_country",
+                          "consumer_region",
+                          "consumer_city",
+                          "api_key",
+                          "app_name"
+                        ]
+                     }
+                  }
+               },
+               "metricsSpec" : [
+                  {
+                     "type" : "count",
+                     "name" : "count"
+                  },
+                  {
+                    "name" : "amount_sum",
+                    "type" : "longSum",
+                    "fieldName" : "amount"
+                  }
+               ]
+            },
+            "tuningConfig" : {
+               "type" : "realtime",
+               "intermediatePersistPeriod" : "PT10S",
+               "windowPeriod" : "PT10S",
+               "maxRowsInMemory" : 75000
+            }
+         },
+         "properties" : {
+            "task.partitions" : "1",
+            "task.replicants" : "1",
+            "topicPattern" : "featured-song-request",
+            "topicPattern.priority" : "1"
+         }
+      }
+   ],
+   "properties" : {
+       "zookeeper.connect" : "localhost:2181",
+       "zookeeper.timeout" : "PT20S",
+       "druid.selectors.indexing.serviceName" : "druid/overlord",
+       "druid.discovery.curator.path" : "/druid/discovery",
+       "kafka.zookeeper.connect" : "192.168.99.100:2181",
+       "kafka.group.id" : "tranquility-kafka",
+       "consumer.numThreads" : "2",
+       "commit.periodMillis" : "15000",
+       "reportDropsAsExceptions" : "false"
+    }
+}
