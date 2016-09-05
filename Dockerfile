@@ -58,6 +58,7 @@ RUN wget -q -O - http://static.druid.io/tranquility/releases/tranquility-distrib
 ADD kafka.json /usr/local/tranquility-distribution-0.8.0/conf
 
 ADD tranquility /usr/local/tranquility-distribution-0.8.0/bin
+RUN chmod +x /usr/local/tranquility-distribution-0.8.0/bin/tranquility
 
 RUN wget -q http://central.maven.org/maven2/net/minidev/json-smart/2.2/json-smart-2.2.jar -P /usr/local/tranquility-distribution-0.8.0/lib/
 RUN wget -q http://central.maven.org/maven2/net/minidev/accessors-smart/1.1/accessors-smart-1.1.jar -P /usr/local/tranquility-distribution-0.8.0/lib/
