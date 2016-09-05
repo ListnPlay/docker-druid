@@ -161,7 +161,7 @@
          "properties" : {
             "task.partitions" : "1",
             "task.replicants" : "1",
-            "topicPattern" : "featured-song-request",
+            "topicPattern" : "request-tracing-flat",
             "topicPattern.priority" : "1"
          }
       }
