@@ -98,6 +98,10 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # - 8090: HTTP (overlord)
 # - 3306: MySQL
 # - 2181 2888 3888: ZooKeeper
+
+# todo run tranquility
+#/usr/local/tranquility-distribution-0.8.0/bin/tranquility kafka -configFile conf/kafka.json
+
 EXPOSE 8081
 EXPOSE 8082
 EXPOSE 8083
