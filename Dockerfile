@@ -64,6 +64,10 @@ RUN wget -q http://central.maven.org/maven2/net/minidev/json-smart/2.2/json-smar
 RUN wget -q http://central.maven.org/maven2/net/minidev/accessors-smart/1.1/accessors-smart-1.1.jar -P /usr/local/tranquility-distribution-0.8.0/lib/
 RUN wget -q http://central.maven.org/maven2/org/ow2/asm/asm/5.0.3/asm-5.0.3.jar -P /usr/local/tranquility-distribution-0.8.0/lib/
 
+RUN apt-get install -y npm
+RUN wget -O - https://deb.nodesource.com/setup_6.x | sudo -E bash - && apt-get install -y nodejs
+RUN npm i -g imply-pivot
+
 # clean up time
 RUN apt-get purge --auto-remove -y git \
       && apt-get clean \
@@ -78,6 +82,8 @@ WORKDIR /
 
 # Setup metadata store and add sample data
 ADD sample-data.sql sample-data.sql
+ADD run.sh /tmp/run.sh
+RUN chmod +x /tmp/run.sh
 RUN /etc/init.d/mysql start \
       && mysql -u root -e "GRANT ALL ON druid.* TO 'druid'@'localhost' IDENTIFIED BY 'diurd'; CREATE database druid CHARACTER SET utf8;" \
       && java -cp /usr/local/druid/lib/druid-services-*-selfcontained.jar \
@@ -108,5 +114,7 @@ EXPOSE 8083
 EXPOSE 8090
 EXPOSE 3306
 EXPOSE 2181 2888 3888
+EXPOSE 9090
 WORKDIR /var/lib/druid
-ENTRYPOINT export HOSTIP="$(resolveip -s $HOSTNAME)" && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+ENTRYPOINT /tmp/run.sh
+#ENTRYPOINT export HOSTIP="$(resolveip -s $HOSTNAME)" && sed -i "s/ZOOKEEPER_URL/$ZOOKEEPER_URL/g" /usr/local/tranquility-distribution-0.8.0/conf/kafka.json && exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
