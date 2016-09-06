@@ -57,7 +57,7 @@ RUN cp -r distribution/target/hadoop-dependencies /usr/local/druid/
 RUN wget -q -O - http://static.druid.io/tranquility/releases/tranquility-distribution-0.8.0.tgz | tar -xzf - -C /usr/local
 ADD kafka.json /usr/local/tranquility-distribution-0.8.0/conf/
 
-ADD tranquility /usr/local/tranquility-distribution-0.8.0/bin
+ADD tranquility /usr/local/tranquility-distribution-0.8.0/bin/
 RUN chmod +x /usr/local/tranquility-distribution-0.8.0/bin/tranquility
 
 RUN wget -q http://central.maven.org/maven2/net/minidev/json-smart/2.2/json-smart-2.2.jar -P /usr/local/tranquility-distribution-0.8.0/lib/
