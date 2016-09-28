@@ -169,7 +169,7 @@
          "properties" : {
             "task.partitions" : "1",
             "task.replicants" : "1",
-            "topicPattern" : "request-tracing-flat-csv",
+            "topicPattern" : "request-tracing-flat-tsv",
             "topicPattern.priority" : "1"
          }
       }
