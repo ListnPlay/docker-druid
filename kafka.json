@@ -125,13 +125,12 @@
                },
                "dataSource" : "tracing",
                "parser" : {
-                  "type" : "string",
                   "parseSpec" : {
+                    "format" : "tsv",
+                    "delimiter": "|",
                      "timestampSpec" : {
-                        "format" : "auto",
                         "column" : "timestamp"
                      },
-                     "format" : "csv",
                      "columns": [
                        "pipeline",
                        "requestId",
@@ -170,7 +169,7 @@
          "properties" : {
             "task.partitions" : "1",
             "task.replicants" : "1",
-            "topicPattern" : "request-tracing-flat-csv",
+            "topicPattern" : "request-tracing-flat-csv-2",
             "topicPattern.priority" : "1"
          }
       }
