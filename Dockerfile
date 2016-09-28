@@ -64,9 +64,11 @@ RUN wget -q http://central.maven.org/maven2/net/minidev/json-smart/2.2/json-smar
 RUN wget -q http://central.maven.org/maven2/net/minidev/accessors-smart/1.1/accessors-smart-1.1.jar -P /usr/local/tranquility-distribution-0.8.0/lib/
 RUN wget -q http://central.maven.org/maven2/org/ow2/asm/asm/5.0.3/asm-5.0.3.jar -P /usr/local/tranquility-distribution-0.8.0/lib/
 
+RUN apt-get update
 RUN apt-get install -y npm
 RUN wget -O - https://deb.nodesource.com/setup_6.x | sudo -E bash - && apt-get install -y nodejs
-RUN npm i -g imply-pivot
+RUN wget -q -O - https://static.imply.io/release/imply-1.3.0.tar.gz | tar -xzf - -C /usr/local
+RUN npm install /usr/local/imply-1.3.0/dist/pivot --global
 
 # clean up time
 RUN apt-get purge --auto-remove -y git \

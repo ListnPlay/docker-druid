@@ -69,6 +69,7 @@
                },
                "dimensionsSpec" : {
                  "dimensions" : [
+                   "id",
                    "keywords",
                    "genres",
                    "similarArtists",
@@ -130,15 +131,23 @@
                         "format" : "auto",
                         "column" : "timestamp"
                      },
-                     "format" : "json",
+                     "format" : "csv",
+                     "columns": [
+                       "pipeline",
+                       "requestId",
+                       "timestamp",
+                       "stage",
+                       "campaignIndex",
+                       "campaignId",
+                       "rank"
+                     ],
                      "dimensionsSpec" : {
                         "dimensions" : [
                           "pipeline",
                           "requestId",
                           "stage",
-                          "stageIndex",
-                          "campaignId",
                           "campaignIndex",
+                          "campaignId",
                           "rank"
                         ]
                      }
@@ -161,7 +170,7 @@
          "properties" : {
             "task.partitions" : "1",
             "task.replicants" : "1",
-            "topicPattern" : "request-tracing-flat",
+            "topicPattern" : "request-tracing-flat-csv",
             "topicPattern.priority" : "1"
          }
       }
