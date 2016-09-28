@@ -42,9 +42,10 @@ RUN mkdir -p /usr/local/druid/lib
 ENV GITHUB_OWNER druid-io
 
 # trigger rebuild only if branch changed
-ADD https://api.github.com/repos/$GITHUB_OWNER/druid/git/refs/heads/0.9.1.1 druid-version.json
-RUN git clone -q --branch 0.9.1.1 --depth 1 https://github.com/$GITHUB_OWNER/druid.git /tmp/druid
+ADD https://api.github.com/repos/$GITHUB_OWNER/druid/git/refs/tags/druid-0.9.1.1 druid-version.json
+RUN git clone -q https://github.com/$GITHUB_OWNER/druid.git /tmp/druid
 WORKDIR /tmp/druid
+RUN git checkout tags/druid-0.9.1.1
 # package and install Druid locally
 # use versions-maven-plugin 2.1 to work around https://jira.codehaus.org/browse/MVERSIONS-285
 RUN mvn -U -B org.codehaus.mojo:versions-maven-plugin:2.1:set -DgenerateBackupPoms=false -DnewVersion=0.9.1.1 \
