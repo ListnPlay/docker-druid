@@ -68,8 +68,9 @@ RUN wget -q http://central.maven.org/maven2/org/ow2/asm/asm/5.0.3/asm-5.0.3.jar 
 #RUN apt-get install -y npm
 RUN wget -O - https://deb.nodesource.com/setup_6.x | sudo -E bash - && apt-get install -y nodejs
 RUN wget -q -O - https://static.imply.io/release/imply-2.0.0.tar.gz | tar -xzf - -C /usr/local
-#RUN cp -R /usr/local/imply-2.0.0/dist/pivot /usr/local/
 RUN chmod +x /usr/local/imply-2.0.0/dist/pivot/bin/pivot
+RUN mkdir -p /var/lib/druid/var/pivot
+RUN chmod a+w /var/lib/druid/var/pivot
 
 # clean up time
 RUN apt-get purge --auto-remove -y git \
