@@ -42,21 +42,20 @@ RUN mkdir -p /usr/local/druid/lib
 ENV GITHUB_OWNER druid-io
 
 # trigger rebuild only if branch changed
-ADD https://api.github.com/repos/$GITHUB_OWNER/druid/git/refs/tags/druid-0.9.1.1 druid-version.json
+ADD https://api.github.com/repos/$GITHUB_OWNER/druid/git/refs/tags/druid-0.9.2 druid-version.json
 RUN git clone -q https://github.com/$GITHUB_OWNER/druid.git /tmp/druid
 WORKDIR /tmp/druid
-RUN git checkout tags/druid-0.9.1.1
+RUN git checkout tags/druid-0.9.2
 # package and install Druid locally
 # use versions-maven-plugin 2.1 to work around https://jira.codehaus.org/browse/MVERSIONS-285
-RUN mvn -U -B org.codehaus.mojo:versions-maven-plugin:2.1:set -DgenerateBackupPoms=false -DnewVersion=0.9.1.1 \
+RUN mvn -U -B org.codehaus.mojo:versions-maven-plugin:2.1:set -DgenerateBackupPoms=false -DnewVersion=0.9.2 \
   && mvn -U -B install -DskipTests=true -Dmaven.javadoc.skip=true \
-  && cp services/target/druid-services-0.9.1.1-selfcontained.jar /usr/local/druid/lib
+  && cp services/target/druid-services-0.9.2-selfcontained.jar /usr/local/druid/lib
 
 RUN cp -r distribution/target/extensions /usr/local/druid/
 RUN cp -r distribution/target/hadoop-dependencies /usr/local/druid/
 
 RUN wget -q -O - http://static.druid.io/tranquility/releases/tranquility-distribution-0.8.2.tgz | tar -xzf - -C /usr/local
-ADD kafka.json /usr/local/tranquility-distribution-0.8.2/conf/
 
 ADD tranquility /usr/local/tranquility-distribution-0.8.2/bin/
 RUN chmod +x /usr/local/tranquility-distribution-0.8.2/bin/tranquility
@@ -65,11 +64,12 @@ RUN wget -q http://central.maven.org/maven2/net/minidev/json-smart/2.2/json-smar
 RUN wget -q http://central.maven.org/maven2/net/minidev/accessors-smart/1.1/accessors-smart-1.1.jar -P /usr/local/tranquility-distribution-0.8.2/lib/
 RUN wget -q http://central.maven.org/maven2/org/ow2/asm/asm/5.0.3/asm-5.0.3.jar -P /usr/local/tranquility-distribution-0.8.2/lib/
 
-RUN apt-get update
-RUN apt-get install -y npm
+#RUN apt-get update
+#RUN apt-get install -y npm
 RUN wget -O - https://deb.nodesource.com/setup_6.x | sudo -E bash - && apt-get install -y nodejs
-RUN wget -q -O - https://static.imply.io/release/imply-1.3.0.tar.gz | tar -xzf - -C /usr/local
-RUN npm install /usr/local/imply-1.3.0/dist/pivot --global
+RUN wget -q -O - https://static.imply.io/release/imply-2.0.0.tar.gz | tar -xzf - -C /usr/local
+#RUN cp -R /usr/local/imply-2.0.0/dist/pivot /usr/local/
+RUN chmod +x /usr/local/imply-2.0.0/dist/pivot/bin/pivot
 
 # clean up time
 RUN apt-get purge --auto-remove -y git \
@@ -98,6 +98,9 @@ RUN /etc/init.d/mysql start \
               --user=druid --password=diurd \
       && mysql -u root druid < sample-data.sql \
       && /etc/init.d/mysql stop
+
+# Setup kafka-tranquility
+ADD kafka.json /usr/local/tranquility-distribution-0.8.2/conf/
 # Setup supervisord
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Expose ports:
@@ -107,9 +110,6 @@ ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # - 8090: HTTP (overlord)
 # - 3306: MySQL
 # - 2181 2888 3888: ZooKeeper
-
-# todo run tranquility
-#/usr/local/tranquility-distribution-0.8.0/bin/tranquility kafka -configFile conf/kafka.json
 
 EXPOSE 8081
 EXPOSE 8082

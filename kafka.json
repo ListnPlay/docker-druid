@@ -105,7 +105,7 @@
            "type" : "realtime",
            "intermediatePersistPeriod" : "PT10S",
            "windowPeriod" : "PT10S",
-           "maxRowsInMemory" : 75000
+           "maxRowsInMemory" : 25000
          }
        },
        "properties" : {
@@ -163,7 +163,7 @@
                "type" : "realtime",
                "intermediatePersistPeriod" : "PT10S",
                "windowPeriod" : "PT10S",
-               "maxRowsInMemory" : 75000
+               "maxRowsInMemory" : 25000
             }
          },
          "properties" : {
@@ -172,7 +172,113 @@
             "topicPattern" : "request-tracing-flat-tsv",
             "topicPattern.priority" : "1"
          }
-      }
+      },
+      {
+       "spec" : {
+          "dataSchema" : {
+            "granularitySpec" : {
+              "queryGranularity" : "none",
+              "type" : "uniform",
+              "segmentGranularity" : "hour"
+            },
+            "dataSource" : "events",
+            "parser" : {
+              "type" : "string",
+              "parseSpec" : {
+                "timestampSpec" : {
+                  "format" : "auto",
+                  "column" : "timestamp"
+                },
+                "format" : "json",
+                "flattenSpec": {
+                  "useFieldDiscovery": true,
+                  "fields": [
+                    {
+                      "type": "path",
+                      "name": "consumer_ip",
+                      "expr": "$.consumer.ip"
+                    },
+                    {
+                      "type": "path",
+                      "name": "consumer_gender",
+                      "expr": "$.consumer.gender"
+                    },
+                    {
+                      "type": "path",
+                      "name": "consumer_birth",
+                      "expr": "$.consumer.birth"
+                    },
+                    {
+                      "type": "path",
+                      "name": "cta_type",
+                      "expr": "$.cta.type"
+                    },
+                    {
+                      "type": "path",
+                      "name": "cta_name",
+                      "expr": "$.cta.name"
+                    },
+                    {
+                      "type": "path",
+                      "name": "cta_url",
+                      "expr": "$.cta.url"
+                    }
+
+                  ]
+                },
+                "dimensionsSpec" : {
+                  "dimensions" : [
+                    "campaign",
+                    "adAccount",
+                    "requestId",
+                    "name",
+                    "app",
+                    "source",
+                    "thread",
+                    "second",
+                    "organic",
+                    "charge",
+                    "token",
+                    "consumer_ip",
+                    "consumer_gender",
+                    "consumer_birth",
+                    "parentCampaign",
+                    "cta_type",
+                    "cta_name",
+                    "cta_url",
+                    "viewId",
+                    "ip",
+                    "page"
+                  ]
+                }
+              }
+            },
+            "metricsSpec" : [
+              {
+                "type" : "count",
+                "name" : "count"
+              },
+              {
+                "type" : "doubleSum",
+                "name" : "total_charge",
+                "fieldName" : "charge"
+              }
+            ]
+          },
+          "tuningConfig" : {
+            "type" : "realtime",
+            "intermediatePersistPeriod" : "PT10S",
+            "windowPeriod" : "PT10S",
+            "maxRowsInMemory" : 25000
+          }
+       },
+       "properties" : {
+         "task.partitions" : "1",
+         "task.replicants" : "1",
+         "topicPattern" : "(events|web-event-v2)",
+         "topicPattern.priority" : "1"
+       }
+     }
    ],
    "properties" : {
        "zookeeper.connect" : "localhost:2181",
