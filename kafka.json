@@ -287,7 +287,6 @@
        "druid.discovery.curator.path" : "/druid/discovery",
        "kafka.zookeeper.connect" : "ZOOKEEPER_URL",
        "kafka.group.id" : "tranquility-kafka",
-       "kafka.auto.offset.reset": "earliest",
        "consumer.numThreads" : "2",
        "commit.periodMillis" : "15000",
        "reportDropsAsExceptions" : "false"
