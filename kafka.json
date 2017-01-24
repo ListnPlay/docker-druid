@@ -288,7 +288,7 @@
        "kafka.zookeeper.connect" : "ZOOKEEPER_URL",
        "kafka.group.id" : "tranquility-kafka",
        "consumer.numThreads" : "2",
-       "commit.periodMillis" : "90000",
+       "commit.periodMillis" : "15000",
        "auto.offset.reset": "smallest",
        "reportDropsAsExceptions" : "false"
     }
