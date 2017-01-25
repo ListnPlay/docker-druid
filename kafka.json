@@ -104,8 +104,11 @@
          "tuningConfig" : {
            "type" : "realtime",
            "intermediatePersistPeriod" : "PT10S",
-           "windowPeriod" : "PT10S",
-           "maxRowsInMemory" : 75000
+           "maxRowsInMemory" : 75000,
+           "windowPeriod" : "PT24H",
+           "rejectionPolicy": {
+               "type": "messageTime"
+           }
          }
        },
        "properties" : {
@@ -117,6 +120,7 @@
      },
       {
          "spec" : {
+
             "dataSchema" : {
                "granularitySpec" : {
                   "queryGranularity" : "none",
@@ -162,8 +166,11 @@
             "tuningConfig" : {
                "type" : "realtime",
                "intermediatePersistPeriod" : "PT10S",
-               "windowPeriod" : "PT10S",
-               "maxRowsInMemory" : 75000
+               "maxRowsInMemory" : 75000,
+               "windowPeriod" : "PT24H",
+               "rejectionPolicy": {
+                  "type": "messageTime"
+               }
             }
          },
          "properties" : {
@@ -268,8 +275,11 @@
           "tuningConfig" : {
             "type" : "realtime",
             "intermediatePersistPeriod" : "PT10S",
-            "windowPeriod" : "PT10S",
-            "maxRowsInMemory" : 75000
+            "maxRowsInMemory" : 75000,
+            "windowPeriod" : "PT24H",
+            "rejectionPolicy": {
+               "type": "messageTime"
+            }             
           }
        },
        "properties" : {
