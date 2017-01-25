@@ -289,8 +289,6 @@
        "kafka.group.id" : "tranquility-kafka",
        "consumer.numThreads" : "2",
        "commit.periodMillis" : "15000",
-       "auto.offset.reset": "smallest",
-       "kafka.auto.offset.reset": "smallest",
        "reportDropsAsExceptions" : "false"
     }
 }
