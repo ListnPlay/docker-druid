@@ -248,7 +248,8 @@
                     "cta_url",
                     "viewId",
                     "ip",
-                    "page"
+                    "page",
+                    "playlistId"
                   ]
                 }
               }
